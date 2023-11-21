@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="/stylesheets/style.css">
         <link href="https://fonts.googleapis.com/css?family=Darker+Grotesque&display=swap" rel="stylesheet">
 
-        <script src="https://kit.fontawesome.com/a41e9403cf.js" crossorigin="anonymous"></script>
         <title>BikeShop - Shop</title>
     </head>
 
@@ -60,40 +59,86 @@
                         <tbody>
                             <% 
     
-                            var totalCmd = 0;
+
                             for(var i=0;i<dataCardBike.length;i++){
                             %>
                                 <tr class="basket-item">
                                     <th scope="row"><%=i%></th>
-                                    <td><img src=<%= dataCardBike[i].url %> class="basket-img"></td>
+                                    <td><img src="<%= dataCardBike[i].url %>" class="basket-img"></td>
                                     <td>
                                         <%= dataCardBike[i].name %>
                                     </td>
                                     <td>
                                         <form action="/update-shop" method="POST">
-                                            <input type="hidden" name="position" value="<%=i%>">
+                                            <input type="hidden" name="id" value="<%=dataCardBike[i].id%>">
                                             <input type="text" name="quantity" value="<%= dataCardBike[i].quantity%>">
                                             <button type="submit" class="btn btn-outline-info btn-sm" name="button"><i class="fas fa-sync-alt"></i></button>
                                         </form>
                                     </td>
                                     <td><%= dataCardBike[i].price %>€</td>
                                     <td><%= dataCardBike[i].price * dataCardBike[i].quantity %>€</td>
-                                    <td><a href="/delete-shop?position=<%=i%>"><button class="btn btn-outline-info btn-sm" name="button"><i class="far fa-trash-alt"></i></button></a></td>
+                                    <td><a href="/delete-shop?id=<%=dataCardBike[i].id%>"><button class="btn btn-outline-info btn-sm" name="button"><i class="far fa-trash-alt"></i></button></a></td>
                                 </tr>
                             <%
-                                totalCmd += dataCardBike[i].price * dataCardBike[i].quantity;
-                                // or totalCmd = dataCardBike[i].price * dataCardBike[i].quantity + totalCmd;
                             }
                             %>
-                            
-    
+
+                            <form id="formML" action="/update-modeliv" method="POST">
+                          <%   
+                          for(var i=0;i<modeLivraison.length;i++){
+                            var libelle = modeLivraison[i].montant + "€"
+                            if(modeLivraison[i].montant === 0){
+                                libelle = "frais de port offert"
+                            }
+
+                            check = ""
+                            if(modeLivraison[i].id === selectedModeLiv.id){
+                                check = "checked"
+                            }
+                            %>
+                           
+                          <tr>
+                            <th scope="row"></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="total-box"><input class="form-check-input" type="radio" name="modeLivraison" value="<%=modeLivraison[i].id%>" <%=check%>> <%=modeLivraison[i].libelle%></td>
+                            <td><%=libelle%></td>
+                            <td></td>
+                          </tr>
+                          <%   
+                            }
+                            %>
+                        </form>
+                        <form id="codepromo" action="/add-codepromo" method="POST">
+                          <tr>
+                            <th scope="row"></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="total-box">Code Promo</td>
+                            <td><input type="text" name="codePromo" value=""><button type="submit" class="btn btn-outline-info btn-sm" name="button"><i class="fas fa-sync-alt"></i></button></td>
+                            <td></td>
+                          </tr>
+                        </form>
+                        <% for(var i=0;i<promoCmd.length;i++){%>
+                            <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="total-box"><%=promoCmd[i].code%> (<%=promoCmd[i].libelle%>) </td>
+                                <td><%=promoCmd[i].montant%>€</td>
+                                <td><% if(promoCmd[i].suppr === true){%><a href="/del-codepromo"><button type="submit" class="btn btn-outline-info btn-sm" name="button"><i class="fas fa-times-circle"></i></button></a><%}%></td>
+                            </tr>
+                        <%}%>
                           <tr>
                             <th scope="row"></th>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td class="total-box">Total Basket : </td>
-                            <td><%= totalCmd %>€</td>
+                            <td><%= montantCommande %>€</td>
                             <td></td>
                           </tr>
                         </tbody>
@@ -101,7 +146,9 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-right">
-                        <button class="btn btn-outline-info btn-sm btn-checkout" name="button-checkout">Checkout</button>
+                        <form action="/create-checkout-session" method="POST">
+                            <button class="btn btn-outline-info btn-sm btn-checkout" type="submit">Checkout</button>
+                        </form>
                     </div>
                 </div>
 
@@ -114,6 +161,7 @@
         
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+        <script src="https://kit.fontawesome.com/a41e9403cf.js" crossorigin="anonymous"></script>
+        <script src="/javascripts/script.js"></script>
     </body>
 </html>
