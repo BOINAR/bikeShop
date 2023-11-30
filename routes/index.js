@@ -4,7 +4,7 @@ var articleModel = require('../models/articles');
 var orderModel = require('../models/orders');
 var userModel = require('../models/users');
 
-const stripe = require('stripe')('sk_test_51HQ84jAXaqH2oTbzs6WzzYrmyFALxjsUc5LMZ9qUO5U0xbIrLCQ1IlcDw8HszRZZGLQCkmLkPhXX6U85gAbTlps000GwYlnt4c');
+const stripe = require('stripe')('');
 
 // var dataBikeArray = [
 //   { id: 1, name: "BIK045", url: "/images/bike-1.jpg", price: 679, mea: true, modeLiv: [1, 2], stock: 0 },
